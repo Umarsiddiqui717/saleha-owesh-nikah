@@ -48,6 +48,8 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+  --color-seal: var(--seal);
+  --color-seal-foreground: var(--seal-foreground);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -87,8 +89,14 @@
   --gold: oklch(0.68 0.105 78);
   --cream-deep: oklch(0.94 0.027 86);
   --rose: oklch(0.68 0.12 31);
+  --seal: oklch(0.91 0.025 88);
+  --seal-foreground: oklch(0.52 0.08 78);
+  --burgundy: oklch(0.30 0.115 7);
+  --burgundy-deep: oklch(0.235 0.09 8);
+  --burgundy-light: oklch(0.39 0.12 7);
   --shadow-gold: 0 9px 25px color-mix(in oklab, var(--gold) 20%, transparent);
   --shadow-gold-hover: 0 12px 32px color-mix(in oklab, var(--gold) 32%, transparent);
+  --shadow-seal: 0 7px 18px color-mix(in oklab, var(--burgundy-deep) 45%, transparent), inset 0 0 0 4px color-mix(in oklab, var(--gold) 22%, transparent);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -159,7 +167,38 @@
 @keyframes petal-fall { 0% { transform: translate3d(0,-12vh,0) rotate(0deg); opacity: 0; } 12% { opacity: .42; } 100% { transform: translate3d(35px,112vh,0) rotate(300deg); opacity: 0; } }
 
 .invitation-site { min-height: 100vh; background: var(--background); color: var(--foreground); overflow: clip; }
-.opening-screen { min-height: 100svh; display: grid; place-items: center; padding: 14px; }
+.opening-screen { min-height: 100svh; display: grid; place-items: center; padding: 22px 14px; background: radial-gradient(ellipse at center, var(--card), var(--cream-deep)); perspective: 1200px; transition: opacity .65s ease, max-height .8s ease, padding .8s ease; }
+.is-open .opening-screen { opacity: 0; min-height: 0; max-height: 0; padding-block: 0; overflow: hidden; pointer-events: none; }
+.envelope-stage { width: min(92vw, 560px); text-align: center; }
+.envelope-title { margin-bottom: clamp(44px, 9vh, 82px); color: var(--foreground); transition: opacity .45s ease, transform .55s ease; }
+.envelope-title p { font-size: 1.2rem; font-weight: 600; }
+.envelope-title span { display: block; font-size: .86rem; font-style: italic; }
+.envelope { position: relative; width: 100%; aspect-ratio: 1.28; filter: drop-shadow(0 24px 28px color-mix(in oklab, var(--burgundy-deep) 28%, transparent)); transform-style: preserve-3d; transition: transform .8s cubic-bezier(.22,.8,.2,1); }
+.envelope-back { position: absolute; inset: 0; border-radius: 5px; background: var(--burgundy); box-shadow: inset 0 0 45px color-mix(in oklab, var(--burgundy-deep) 45%, transparent); }
+.envelope-back::before { content: ""; position: absolute; inset: 12px; border: 1px solid color-mix(in oklab, var(--gold) 26%, transparent); opacity: .5; }
+.envelope-left, .envelope-right, .envelope-bottom, .envelope-flap { position: absolute; inset: 0; }
+.envelope-left { clip-path: polygon(0 0, 55% 52%, 0 100%); background: var(--burgundy-light); }
+.envelope-right { clip-path: polygon(100% 0, 45% 52%, 100% 100%); background: var(--burgundy); }
+.envelope-bottom { clip-path: polygon(0 100%, 50% 43%, 100% 100%); background: var(--burgundy-light); box-shadow: inset 0 -20px 40px color-mix(in oklab, var(--burgundy-deep) 38%, transparent); }
+.envelope-flap { z-index: 4; clip-path: polygon(0 0, 100% 0, 50% 58%); background: linear-gradient(165deg, var(--burgundy-light), var(--burgundy-deep)); transform-origin: top; transition: transform .8s cubic-bezier(.4,0,.2,1), z-index 0s .35s; }
+.envelope-flap::after { content: ""; position: absolute; inset: 12px; clip-path: polygon(0 0, 100% 0, 50% 58%); border-top: 1px solid color-mix(in oklab, var(--gold) 45%, transparent); }
+.envelope-paper { position: absolute; z-index: 1; left: 7%; right: 7%; top: 8%; height: 82%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: var(--card); border: 1px solid var(--gold); color: var(--foreground); transition: transform .85s cubic-bezier(.22,.8,.2,1) .3s; }
+.envelope-paper span { font-size: .8rem; text-transform: uppercase; letter-spacing: .15em; }
+.envelope-paper strong { font-family: var(--font-display); font-size: clamp(2.2rem, 10vw, 4rem); font-weight: 400; }
+.envelope-paper i { color: var(--gold); font-weight: 400; }
+.envelope-paper small { letter-spacing: .18em; }
+.wax-seal { position: absolute; z-index: 7; left: 50%; top: 51%; transform: translate(-50%,-50%); border: 1px solid color-mix(in oklab, var(--gold) 55%, transparent); transition: opacity .35s ease, transform .3s ease; }
+.wax-seal:hover { transform: translate(-50%,-50%) scale(1.06); }
+.wax-seal span { margin-inline: -3px; font-size: .7em; color: var(--gold); }
+.envelope-emboss { position: absolute; z-index: 5; top: 57%; color: color-mix(in oklab, var(--gold) 27%, transparent); font-size: clamp(3rem, 13vw, 5.5rem); text-shadow: 1px 1px color-mix(in oklab, var(--burgundy-deep) 55%, transparent); }
+.emboss-left { left: 8%; transform: rotate(-24deg); }.emboss-right { right: 8%; transform: scaleX(-1) rotate(-24deg); }
+.tap-instruction { display: inline-flex; align-items: center; gap: 8px; margin-top: 34px; color: var(--foreground); text-transform: uppercase; letter-spacing: .14em; font-size: .78rem; }
+.tap-instruction svg { width: 14px; }
+.is-opening .envelope-title, .is-opening .tap-instruction { opacity: 0; transform: translateY(-10px); }
+.is-opening .wax-seal { opacity: 0; transform: translate(-50%,-50%) scale(.7); }
+.is-opening .envelope-flap { z-index: 0; transform: rotateX(178deg); }
+.is-opening .envelope-paper { transform: translateY(-58%); }
+.is-opening .envelope { transform: translateY(13vh) scale(1.05); }
 .opening-inner, .invitation-card { position: relative; width: min(100%, 720px); overflow: hidden; background-color: var(--card); background-image: radial-gradient(circle at 20% 10%, color-mix(in oklab, var(--gold) 7%, transparent) 0 1px, transparent 1.5px), radial-gradient(circle at 80% 65%, color-mix(in oklab, var(--primary) 5%, transparent) 0 1px, transparent 1.5px); background-size: 24px 24px, 31px 31px; border: 1px solid var(--border); box-shadow: 0 20px 70px color-mix(in oklab, var(--foreground) 13%, transparent); }
 .opening-inner { min-height: calc(100svh - 28px); display: grid; place-items: center; }
 .opening-inner::before, .invitation-card::before { content: ""; position: absolute; inset: 8px; border: 1px solid color-mix(in oklab, var(--gold) 45%, transparent); pointer-events: none; z-index: 3; }
