@@ -12,6 +12,7 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         invitation:
           "border border-primary/35 bg-primary px-7 text-primary-foreground shadow-[var(--shadow-gold)] hover:bg-primary/92 hover:shadow-[var(--shadow-gold-hover)] active:scale-[0.98]",
+        seal: "bg-seal text-seal-foreground shadow-[var(--shadow-seal)] hover:scale-105 active:scale-95",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
@@ -25,6 +26,7 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
         invitation: "h-12 rounded-full px-7 text-[0.82rem] tracking-[0.12em]",
+        seal: "h-20 w-20 rounded-full p-0 font-display text-2xl",
       },
     },
     defaultVariants: {

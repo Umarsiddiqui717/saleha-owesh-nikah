@@ -102,30 +102,51 @@ function Countdown() {
 
 function Index() {
   const [opened, setOpened] = useState(false);
+  const [opening, setOpening] = useState(false);
   const petals = useMemo(() => Array.from({ length: 11 }, (_, index) => index), []);
   const mapUrl = `https://www.google.com/maps?q=${invitation.mapCenter.latitude},${invitation.mapCenter.longitude}&z=16&output=embed`;
 
   const openInvitation = () => {
-    setOpened(true);
-    window.setTimeout(() => document.getElementById("invitation")?.scrollIntoView({ behavior: "smooth" }), 550);
+    setOpening(true);
+    window.setTimeout(() => {
+      setOpened(true);
+      window.setTimeout(() => document.getElementById("invitation")?.scrollIntoView({ behavior: "smooth" }), 100);
+    }, 950);
   };
 
   return (
-    <main className={`invitation-site ${opened ? "is-open" : ""}`}>
+    <main className={`invitation-site ${opening ? "is-opening" : ""} ${opened ? "is-open" : ""}`}>
       <section className="opening-screen" aria-label="Wedding invitation cover">
-        <div className="opening-inner">
-          <FloralCorners subtle />
-          <img className="opening-lanterns" src={lanterns.url} alt="" width={1024} height={1024} />
-          <div className="opening-copy">
-            <p className="blessing">In the name of ‘ALLAH’<br /><small>the most beneficent and the most merciful</small></p>
-            <Ornament />
-            <p className="couple-name">SALEHA</p>
-            <span className="weds-seal">Weds</span>
-            <p className="couple-name">OWESH</p>
-            <Button variant="invitation" size="invitation" onClick={openInvitation}>
-              Open Invitation <Sparkles aria-hidden="true" />
+        <div className="envelope-stage">
+          <div className="envelope-title">
+            <p>In the name of ‘ALLAH’</p>
+            <span>the most beneficent and the most merciful</span>
+          </div>
+          <div className="envelope" aria-label="Sealed wedding invitation envelope">
+            <div className="envelope-paper">
+              <span>Wedding Invitation</span>
+              <strong>Saleha <i>&amp;</i> Owesh</strong>
+              <small>20 · 11 · 2026</small>
+            </div>
+            <div className="envelope-back" />
+            <div className="envelope-left" />
+            <div className="envelope-right" />
+            <div className="envelope-bottom" />
+            <div className="envelope-flap" />
+            <div className="envelope-emboss emboss-left" aria-hidden="true">❦</div>
+            <div className="envelope-emboss emboss-right" aria-hidden="true">❦</div>
+            <Button
+              variant="seal"
+              size="seal"
+              onClick={openInvitation}
+              disabled={opening}
+              aria-label="Open invitation"
+              className="wax-seal"
+            >
+              S<span>&amp;</span>O
             </Button>
           </div>
+          <p className="tap-instruction">Open Invitation <Sparkles aria-hidden="true" /></p>
         </div>
       </section>
 
