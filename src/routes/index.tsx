@@ -73,8 +73,9 @@ function FloralCorners({ subtle = false }: { subtle?: boolean }) {
 }
 
 function Countdown() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(() => getTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   useEffect(() => {
+    setTimeLeft(getTimeLeft());
     const timer = window.setInterval(() => setTimeLeft(getTimeLeft()), 1000);
     return () => window.clearInterval(timer);
   }, []);
@@ -102,10 +103,7 @@ function Countdown() {
 function Index() {
   const [opened, setOpened] = useState(false);
   const petals = useMemo(() => Array.from({ length: 11 }, (_, index) => index), []);
-  const mapKey = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
-  const mapUrl = mapKey
-    ? `https://www.google.com/maps/embed/v1/view?key=${mapKey}&center=${invitation.mapCenter.latitude},${invitation.mapCenter.longitude}&zoom=16`
-    : `https://www.google.com/maps?q=${invitation.mapCenter.latitude},${invitation.mapCenter.longitude}&z=16&output=embed`;
+  const mapUrl = `https://www.google.com/maps?q=${invitation.mapCenter.latitude},${invitation.mapCenter.longitude}&z=16&output=embed`;
 
   const openInvitation = () => {
     setOpened(true);
