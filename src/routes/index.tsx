@@ -72,6 +72,20 @@ function FloralCorners({ subtle = false }: { subtle?: boolean }) {
   );
 }
 
+function LivingAtmosphere({ invitationView = false }: { invitationView?: boolean }) {
+  return (
+    <div className={`living-atmosphere ${invitationView ? "atmosphere-page" : "atmosphere-opening"}`} aria-hidden="true">
+      <div className="ambient-glow" />
+      <div className="butterfly butterfly-one"><i /><i /><b /></div>
+      <div className="butterfly butterfly-two"><i /><i /><b /></div>
+      <div className="butterfly butterfly-three"><i /><i /><b /></div>
+      <div className="floating-petals">
+        {Array.from({ length: 16 }, (_, index) => <i key={index} className={`floating-petal floating-petal-${index + 1}`} />)}
+      </div>
+    </div>
+  );
+}
+
 function Countdown() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   useEffect(() => {
@@ -107,16 +121,19 @@ function Index() {
   const mapUrl = `https://www.google.com/maps?q=${invitation.mapCenter.latitude},${invitation.mapCenter.longitude}&z=16&output=embed`;
 
   const openInvitation = () => {
+    if (opening) return;
     setOpening(true);
     window.setTimeout(() => {
       setOpened(true);
-      window.setTimeout(() => document.getElementById("invitation")?.scrollIntoView({ behavior: "smooth" }), 100);
-    }, 950);
+      window.setTimeout(() => document.getElementById("invitation")?.scrollIntoView({ behavior: "smooth" }), 80);
+    }, 2300);
   };
 
   return (
     <main className={`invitation-site ${opening ? "is-opening" : ""} ${opened ? "is-open" : ""}`}>
       <section className="opening-screen" aria-label="Wedding invitation cover">
+        <LivingAtmosphere />
+        <FloralCorners subtle />
         <div className="envelope-stage">
           <div className="envelope-title">
             <p>In the name of ‘ALLAH’</p>
@@ -139,7 +156,7 @@ function Index() {
               variant="seal"
               size="seal"
               onClick={openInvitation}
-              disabled={opening}
+              aria-disabled={opening}
               aria-label="Open invitation"
               className="wax-seal"
             >
@@ -151,6 +168,7 @@ function Index() {
       </section>
 
       <section id="invitation" className="invitation-wrap" aria-hidden={!opened}>
+        {opened && <LivingAtmosphere invitationView />}
         {opened && (
           <div className="petals" aria-hidden="true">
             {petals.map((petal) => <i key={petal} className={`petal petal-${petal + 1}`} />)}
